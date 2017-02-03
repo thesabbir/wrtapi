@@ -2,7 +2,7 @@ package main
 
 import (
     "gopkg.in/gin-gonic/gin.v1"
-    "lede-mobile/utils"
+    "wrtapi/utils"
     "encoding/json"
     "net/http"
 )
@@ -30,5 +30,5 @@ func main() {
         responder(stat, err, c)
     })
 
-    router.Run() // listen and serve on 0.0.0.0:8080
+    router.Run() // 0.0.0.0:8080
 }
