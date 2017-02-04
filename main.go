@@ -1,34 +1,33 @@
 package main
 
 import (
-    "gopkg.in/gin-gonic/gin.v1"
-    "wrtapi/utils"
-    "encoding/json"
-    "net/http"
+	"encoding/json"
+	"gopkg.in/gin-gonic/gin.v1"
+	"net/http"
+	"wrtapi/utils"
 )
 
-func responder(stat []byte, err error, res *gin.Context) {
-    if err != nil {
-        res.JSON(http.StatusNotImplemented, gin.H{"error": "ubus failed"})
-    } else {
-        var parsed interface{}
-        json.Unmarshal(stat, &parsed)
-        res.JSON(http.StatusOK, parsed)
-    }
+func ubusResponse(s func() ([]byte, error), res *gin.Context) {
+	stat, err := s()
+	if err != nil {
+		res.JSON(http.StatusNotImplemented, gin.H{"error": "ubus failed"})
+	} else {
+		var parsed interface{}
+		json.Unmarshal(stat, &parsed)
+		res.JSON(http.StatusOK, parsed)
+	}
 }
 
 func main() {
-    router := gin.Default()
+	router := gin.Default()
 
-    router.GET("/", func(c *gin.Context) {
-        stat, err := utils.SystemInfo()
-        responder(stat, err, c)
-    })
+	router.GET("/", func(c *gin.Context) {
+		ubusResponse(utils.UbusCall.Info, c)
+	})
 
-    router.GET("/wan", func(c *gin.Context) {
-        stat, err := utils.StatusWan()
-        responder(stat, err, c)
-    })
+	router.GET("/wan", func(c *gin.Context) {
+		ubusResponse(utils.UbusCall.WanStatus, c)
+	})
 
-    router.Run() // 0.0.0.0:8080
+	router.Run() // 0.0.0.0:8080
 }
