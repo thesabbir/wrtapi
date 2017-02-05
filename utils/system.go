@@ -44,3 +44,7 @@ func (u Ubus) InterfacesList() ([]byte, error) {
 func (u Ubus) NetworkConfig() ([]byte, error) {
     return u("uci get {\"config\":\"network\"}")
 }
+
+func (u Ubus) WlanClients() ([]byte, error) {
+    return u("hostapd.wlan0 get_clients")
+}
