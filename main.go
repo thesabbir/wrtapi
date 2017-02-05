@@ -24,14 +24,34 @@ func main() {
     router := gin.Default()
 
     router.GET("/", func(c *gin.Context) {
+        c.JSON(http.StatusOK, gin.H{"wrtapi": "0.1"})
+    })
+
+    router.GET("/system", func(c *gin.Context) {
+        ubusResponse(utils.UbusCall.Info, c)
+    })
+
+    router.GET("/system/board", func(c *gin.Context) {
         ubusResponse(utils.UbusCall.BoardInfo, c)
     })
 
-    router.GET("/wan", func(c *gin.Context) {
+    router.GET("/system/services", func(c *gin.Context) {
+        ubusResponse(utils.UbusCall.ServiceList, c)
+    })
+
+    router.GET("/network", func(c *gin.Context) {
+        ubusResponse(utils.UbusCall.NetworkConfig, c)
+    })
+
+    router.GET("/network/interfaces", func(c *gin.Context) {
+        ubusResponse(utils.UbusCall.InterfacesList, c)
+    })
+
+    router.GET("/network/interfaces/wan", func(c *gin.Context) {
         ubusResponse(utils.UbusCall.WanStatus, c)
     })
 
-    router.GET("/lan", func(c *gin.Context) {
+    router.GET("/network/interfaces/lan", func(c *gin.Context) {
         ubusResponse(utils.UbusCall.LanStatus, c)
     })
 
@@ -39,20 +59,8 @@ func main() {
         ubusResponse(utils.UbusCall.WirelessStatus, c)
     })
 
-    router.GET("/system", func(c *gin.Context) {
-        ubusResponse(utils.UbusCall.Info, c)
-    })
-
-    router.GET("/services", func(c *gin.Context) {
-        ubusResponse(utils.UbusCall.ServiceList, c)
-    })
-
-    router.GET("/interfaces", func(c *gin.Context) {
-        ubusResponse(utils.UbusCall.InterfacesList, c)
-    })
-
-    router.GET("/config/network",  func(c *gin.Context) {
-        ubusResponse(utils.UbusCall.NetworkConfig, c)
+    router.GET("/wlan/clients", func(c *gin.Context) {
+        ubusResponse(utils.UbusCall.WlanClients, c)
     })
 
     router.Run() // 0.0.0.0:8080
