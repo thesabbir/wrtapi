@@ -25,6 +25,22 @@ func (u Ubus) WanStatus() ([]byte, error) {
     return u("network.interface.wan status")
 }
 
+func (u Ubus) LanStatus() ([]byte, error) {
+    return u("network.interface.lan status")
+}
+
 func (u Ubus) WirelessStatus() ([]byte, error) {
     return u("network.wireless status")
+}
+
+func (u Ubus) ServiceList() ([]byte, error) {
+    return u("service list")
+}
+
+func (u Ubus) InterfacesList() ([]byte, error) {
+    return u("network.device status")
+}
+
+func (u Ubus) NetworkConfig() ([]byte, error) {
+    return u("uci get {\"config\":\"network\"}")
 }
